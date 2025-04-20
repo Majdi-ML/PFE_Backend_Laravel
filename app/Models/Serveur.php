@@ -82,6 +82,11 @@ class Serveur extends Model
 	{
 		return $this->belongsTo(Etat::class);
 	}
+	public function verTechFirmware()
+	{
+		return $this->belongsTo(verTechFirmware::class);
+	}
+
 
 	public function platforme()
 	{

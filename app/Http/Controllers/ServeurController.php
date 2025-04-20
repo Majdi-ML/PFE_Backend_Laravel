@@ -12,7 +12,17 @@ class ServeurController extends Controller
      */
     public function index()
     {
-        $serveurs = Serveur::with(['etat', 'platforme', 'typeserveur', 'os', 'soclestandardomu', 'demande'])->get();
+        // Charger les relations, y compris 'verTechFirmware'
+        $serveurs = Serveur::with([
+            'etat', 
+            'platforme', 
+            'typeserveur', 
+            'os', 
+            'soclestandardomu', 
+            'demande', 
+            'verTechFirmware'  // Ajout de la relation 'verTechFirmware'
+        ])->get();
+        
         return response()->json($serveurs);
     }
 
@@ -23,22 +33,23 @@ class ServeurController extends Controller
     {
         $validated = $request->validate([
             'ref' => 'nullable|string|max:255',
-            'etat_id' => 'nullable|integer|exists:etats,id',
-            'platforme_id' => 'nullable|integer|exists:platformes,id',
+            'etat_id' => 'nullable|integer|exists:etat,id',
+            'platforme_id' => 'nullable|integer|exists:platforme,id',
             'hostname' => 'nullable|string|max:255',
             'fqdn' => 'nullable|string|max:255',
-            'type_id' => 'nullable|integer|exists:typeserveurs,id',
+            'type_id' => 'nullable|integer|exists:typeserveur,id',
             'modele' => 'nullable|string|max:255',
-            'os_id' => 'nullable|integer|exists:o_s,id',
-            'verTechFirmware_id' => 'nullable|integer',
+            'os_id' => 'nullable|integer|exists:os,id',
+            'verTechFirmware_id' => 'nullable|integer|exists:ver_tech_firmware,id',  // Validation de la clé étrangère
             'cluster' => 'nullable|string|max:255',
             'ipSource' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'socleStandardOmu_id' => 'nullable|integer|exists:soclestandardomus,id',
+            'socleStandardOmu_id' => 'nullable|integer|exists:soclestandardomu,id',
             'complementsInformations' => 'nullable|string',
             'demande_id' => 'required|integer|exists:demandes,id'
         ]);
 
+        // Création du serveur
         $serveur = Serveur::create($validated);
 
         return response()->json($serveur, 201);
@@ -49,7 +60,17 @@ class ServeurController extends Controller
      */
     public function show(string $id)
     {
-        $serveur = Serveur::with(['etat', 'platforme', 'typeserveur', 'os', 'soclestandardomu', 'demande'])->findOrFail($id);
+        // Charger les relations, y compris 'verTechFirmware'
+        $serveur = Serveur::with([
+            'etat', 
+            'platforme', 
+            'typeserveur', 
+            'os', 
+            'soclestandardomu', 
+            'demande', 
+            'verTechFirmware'  // Ajout de la relation 'verTechFirmware'
+        ])->findOrFail($id);
+        
         return response()->json($serveur);
     }
 
@@ -69,7 +90,7 @@ class ServeurController extends Controller
             'type_id' => 'nullable|integer|exists:typeserveurs,id',
             'modele' => 'nullable|string|max:255',
             'os_id' => 'nullable|integer|exists:o_s,id',
-            'verTechFirmware_id' => 'nullable|integer',
+            'verTechFirmware_id' => 'nullable|integer|exists:ver_tech_firmware,id',  // Validation de la clé étrangère
             'cluster' => 'nullable|string|max:255',
             'ipSource' => 'nullable|string|max:255',
             'description' => 'nullable|string',
@@ -78,6 +99,7 @@ class ServeurController extends Controller
             'demande_id' => 'nullable|integer|exists:demandes,id'
         ]);
 
+        // Mise à jour du serveur
         $serveur->update($validated);
 
         return response()->json($serveur);
