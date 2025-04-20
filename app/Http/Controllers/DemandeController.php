@@ -9,14 +9,25 @@ use Illuminate\Http\JsonResponse;
 
 class DemandeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
-    {
-        $demandes = Demande::all();
-        return response()->json($demandes);
-    }
+{
+    $demandes = Demande::with([
+        'clusters',
+        'logfiles',
+        'logfilespatterns',
+        'processes',
+        'requetessqls',
+        'scripts',
+        'serveurs',
+        'trapssnmps',
+        'urls',
+        'status',
+        'user',
+        'serviceplatfom'
+    ])->get();
+
+    return response()->json($demandes);
+}
 
     /**
      * Store a newly created resource in storage.
@@ -44,10 +55,24 @@ class DemandeController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        $demande = Demande::findOrFail($id);
-        return response()->json($demande);
-    }
+{
+    $demande = Demande::with([
+        'clusters',
+        'logfiles',
+        'logfilespatterns',
+        'processes',
+        'requetessqls',
+        'scripts',
+        'serveurs',
+        'trapssnmps',
+        'urls',
+        'status',
+        'user',
+        'serviceplatfom'
+    ])->findOrFail($id);
+
+    return response()->json($demande);
+}
 
     /**
      * Update the specified resource in storage.

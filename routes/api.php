@@ -20,6 +20,11 @@ use App\Http\Controllers\ClusterController;
 use App\Http\Controllers\LogfileController;
 use App\Http\Controllers\ScriptController;
 use App\Http\Controllers\ProcessController;
+use App\Http\Controllers\UrlController;
+use App\Http\Controllers\RequetessqlController;
+use App\Http\Controllers\TrapssnmpController;
+use App\Http\Controllers\LogfilespatternController;
+
 
 
 
@@ -46,3 +51,7 @@ Route::apiResource('clusters', ClusterController::class);
 Route::apiResource('logfiles', LogfileController::class);
 Route::apiResource('scripts', ScriptController::class);
 Route::apiResource('processes', ProcessController::class);
+Route::apiResource('urls', UrlController::class);
+Route::apiResource('requetessql', RequetessqlController::class);
+Route::apiResource('trapssnmp', TrapssnmpController::class);
+Route::apiResource('logfilespatterns', LogfilespatternController::class);
