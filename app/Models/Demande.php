@@ -51,7 +51,8 @@ class Demande extends Model
 		'description', 
 		'status_id',
 		'user_id',
-		'serviceplatfom_id'
+		'serviceplatfom_id',
+    	'ref'
 	];
 
 	public function status()

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
-	use HasFactory, Notifiable;
+	use HasFactory, Notifiable ,HasApiTokens;
 
 	protected $table = 'user';
 	public $timestamps = true;
@@ -53,4 +53,13 @@ class User extends Authenticatable
 	{
 		return $this->hasMany(Serviceplatfom::class);
 	}
+	public function isAdmin()
+    {
+        return $this->role_id === 2;
+    }
+
+    public function isDemandeur()
+    {
+        return $this->role_id === 1;
+    }
 }

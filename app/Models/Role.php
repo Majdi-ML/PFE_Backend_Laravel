@@ -27,7 +27,9 @@ class Role extends Model
 	protected $fillable = [
 		'role'
 	];
-
+	const DEMANDEUR = 1; // pour mathematicians
+    const ADMIN = 2;     // pour scientists
+    const DEFAULT = 1; 
 	public function users()
 	{
 		return $this->hasMany(User::class);

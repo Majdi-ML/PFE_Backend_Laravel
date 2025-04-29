@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Demande;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Carbon\Carbon; 
 
 
 class DemandeController extends Controller
@@ -12,18 +13,11 @@ class DemandeController extends Controller
     public function index()
 {
     $demandes = Demande::with([
-        'clusters',
-        'logfiles',
-        'logfilespatterns',
-        'processes',
-        'requetessqls',
-        'scripts',
-        'serveurs',
-        'trapssnmps',
-        'urls',
+       
         'status',
         'user',
         'serviceplatfom'
+        
     ])->get();
 
     return response()->json($demandes);
@@ -37,15 +31,22 @@ class DemandeController extends Controller
         $request->validate([
             'description' => 'required|string|max:255',
             'status_id' => 'required|integer|exists:status,id',
-            'user_id' => 'nullable|integer|exists:users,id',
+            'user_id' => 'nullable|integer|exists:user,id',
             'serviceplatfom_id' => 'required|integer|exists:serviceplatfom,id',
         ]);
+        
+         // récupérer le nom de la plateforme
+    $platformName = \App\Models\Serviceplatfom::findOrFail($request->serviceplatfom_id)->nom ?? 'Unknown';
+
+    // générer la ref
+    $ref = 'REF' . Carbon::now()->format('Ymd') . $platformName;
 
         $demande = Demande::create([
             'description' => $request->description,
             'status_id' => $request->status_id,
             'user_id' => $request->user_id,
             'serviceplatfom_id' => $request->serviceplatfom_id,
+            'ref' => $ref,
         ]);
 
         return response()->json($demande, 201);
@@ -82,7 +83,7 @@ class DemandeController extends Controller
         $request->validate([
             'description' => 'nullable|string|max:255',
             'status_id' => 'nullable|integer|exists:status,id',
-            'user_id' => 'nullable|integer|exists:users,id',
+            'user_id' => 'nullable|integer|exists:user,id',
             'serviceplatfom_id' => 'nullable|integer|exists:serviceplatfom,id',
         ]);
 

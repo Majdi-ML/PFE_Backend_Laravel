@@ -31,6 +31,7 @@ use App\Http\Controllers\LogfilespatternController;
 
 Route::post('/ldap-login', [LdapAuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/ldap-logout', [LdapAuthController::class, 'logout']);
+
 Route::apiResource('criticites',CriticiteController::class);
 Route::apiResource('os', OSController::class);
 Route::apiResource('platformes', PlatformeController::class);
@@ -45,7 +46,7 @@ Route::apiResource('role', RoleController::class);
 Route::apiResource('support', SupportController::class);
 Route::apiResource('serviceplatfoms', ServiceplatfomController::class);
 
-Route::apiResource('demandes', DemandeController::class);
+Route::apiResource('demandes', DemandeController::class)->withoutMiddleware(['csrf']);  ;
 Route::apiResource('serveurs', ServeurController::class);
 Route::apiResource('clusters', ClusterController::class);
 Route::apiResource('logfiles', LogfileController::class);
